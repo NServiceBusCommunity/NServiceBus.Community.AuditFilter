@@ -79,8 +79,12 @@
         testingTransport.ApplyToEndpoint(configuration);
         addAuditFilter(configuration);
 
-        var endpoint = await Endpoint.Start(configuration);
-        await endpoint.SendLocal(message);
-        return await testingTransport.GetProcessedMessages(endpoint);
+        var builder = Host.CreateApplicationBuilder();
+        builder.Services.AddNServiceBusEndpoint(configuration);
+        var host = builder.Build();
+        await host.StartAsync();
+        var session = host.Services.GetRequiredService<IMessageSession>();
+        await session.SendLocal(message);
+        return await testingTransport.GetProcessedMessages(host);
     }
 }

@@ -22,9 +22,9 @@
         transport.StorageDirectory(fullPath);
     }
 
-    public async Task<List<AuditedMessageData>> GetProcessedMessages(params IEndpointInstance[] endpointInstances)
+    public async Task<List<AuditedMessageData>> GetProcessedMessages(params IHost[] hosts)
     {
-        if (endpointInstances.Length != endpointInstanceCount)
+        if (hosts.Length != endpointInstanceCount)
         {
             throw new();
         }
@@ -45,7 +45,7 @@
             }
         }
 
-        await Task.WhenAll(endpointInstances.Select(_ => _.Stop()));
+        await Task.WhenAll(hosts.Select(_ => _.StopAsync()));
 
         return GetMessages().ToList();
     }

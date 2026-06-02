@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NServiceBus.AuditFilter;
 
 class Program
@@ -20,8 +22,12 @@ class Program
 
         #endregion
 
-        var endpoint = await Endpoint.Start(endpointConfiguration)
+        var builder = Host.CreateApplicationBuilder();
+        builder.Services.AddNServiceBusEndpoint(endpointConfiguration);
+        var host = builder.Build();
+        await host.StartAsync()
             .ConfigureAwait(false);
+        var session = host.Services.GetRequiredService<IMessageSession>();
 
         Console.WriteLine($"Audit Path:\r\n{AuditPath}");
         Console.WriteLine("Press E to send a message that will be excluded");
@@ -35,21 +41,21 @@ class Program
             if (key.Key == ConsoleKey.I)
             {
                 var message = new MessageToIncludeAudit();
-                await endpoint.SendLocal(message)
+                await session.SendLocal(message)
                     .ConfigureAwait(false);
                 continue;
             }
             if (key.Key == ConsoleKey.E)
             {
                 var message = new MessageToExcludeFromAudit();
-                await endpoint.SendLocal(message)
+                await session.SendLocal(message)
                     .ConfigureAwait(false);
                 continue;
             }
             break;
         }
 
-        await endpoint.Stop()
+        await host.StopAsync()
             .ConfigureAwait(false);
     }
 }
