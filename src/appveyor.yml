@@ -23,7 +23,7 @@ build_script:
       }
     }
 - dotnet build src --configuration Release
-- dotnet test --solution src/NsbAuditFilter.slnx --configuration Release --no-build --no-restore
+- dotnet test --solution src/NsbAuditFilter.slnx --configuration Release --no-build --no-restore --results-directory TestResults --report-trx
 
 on_failure:
   - ps: |
@@ -33,5 +33,14 @@ on_failure:
         Push-AppveyorArtifact $_.FullName -FileName $rel
       }
 test: off
+on_finish:
+- pwsh: |
+    $url = "https://ci.appveyor.com/api/testresults/mstest/$env:APPVEYOR_JOB_ID"
+    $client = [System.Net.WebClient]::new()
+    foreach ($trx in Get-ChildItem TestResults -Filter *.trx -Recurse -ErrorAction SilentlyContinue)
+    {
+      Write-Host "Uploading $($trx.FullName)"
+      $client.UploadFile($url, $trx.FullName)
+    }
 artifacts:
 - path: nugets\*.nupkg
