@@ -5,6 +5,7 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <NoWarn>$(NoWarn);xUnit1051</NoWarn>
     <RootNamespace>testing</RootNamespace>
+    <AssemblyName>AuditFilterTests</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MarkdownSnippets.MsBuild" PrivateAssets="all" />
