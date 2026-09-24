@@ -7,7 +7,7 @@ To change this file edit the source file and then run MarkdownSnippets.
 
 # <img src="/src/icon.png" height="30px"> NServiceBus.Community.AuditFilter
 
-[![Build status](https://img.shields.io/appveyor/build/SimonCropp/nservicebus-community-auditFilter)](https://ci.appveyor.com/project/SimonCropp/nservicebus-community-auditFilter)
+[![Build status](https://github.com/NServiceBusCommunity/NServiceBus.Community.AuditFilter/actions/workflows/build.yml/badge.svg)](https://github.com/NServiceBusCommunity/NServiceBus.Community.AuditFilter/actions/workflows/build.yml)
 [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Community.AuditFilter.svg)](https://www.nuget.org/packages/NServiceBus.Community.AuditFilter/)
 
 Add message auditing filtering functionality to [NServiceBus](https://docs.particular.net/nservicebus/operations/auditing).
